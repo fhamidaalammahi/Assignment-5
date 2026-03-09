@@ -132,3 +132,44 @@ function getLabelDesign(labels) {
 
   return allLabels;
 }
+
+function getBorderColor(status) {
+  if (status === "open") {
+    return "#00A96E";
+  } else {
+    return "#A855F7";
+  }
+}
+
+function getDate(createdAt) {
+  const date = new Date(createdAt);
+  const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+
+  return formattedDate;
+}
+
+function getModalPriority(priority) {
+  if (priority === "high") {
+    return `<div
+                    class="px-2 py-0.5 inline-flex items-center gap-1 bg-[#EF4444] rounded-full"
+                  >
+
+                    <span class="text-white font-medium text-xs">HIGH</span>
+                  </div>`;
+  } else if (priority === "medium") {
+    return `<div
+                    class="px-2 py-0.5 inline-flex items-center gap-1 bg-[#D97706] rounded-full"
+                  >
+
+                    <span class="text-white font-medium text-xs">HIGH</span>
+                  </div>`;
+  } else {
+    return `<div
+                    class="px-2 py-0.5 inline-flex items-center gap-1 bg-[#9CA3AF] rounded-full"
+                  >
+
+                    <span class="text-white font-medium text-xs">LOW</span>
+                  </div>`;
+  }
+}
+
