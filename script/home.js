@@ -55,3 +55,80 @@ function getStatusDesign(status) {
                 </div>`;
 }
 
+function getPriorityDesign(priority) {
+  if (priority === "high") {
+    return `<div
+                  class="flex items-center justify-center bg-[#FEECEC] rounded-full w-20 h-6 text-[#EF4444] font-medium text-xs"
+                >
+                  <span>HIGH</span>
+                </div>`;
+  } else if (priority === "medium") {
+    return `<div
+                  class="flex items-center justify-center bg-[#FFF6D1] rounded-full w-20 h-6 text-[#F59E0B] font-medium text-xs"
+                >
+                  <span>MEDIUM</span>
+                </div>`;
+  } else {
+    return `<div
+                  class="flex items-center justify-center bg-[#EEEFF2] rounded-full w-20 h-6 text-[#9CA3AF] font-medium text-xs"
+                >
+                  <span>LOW</span>
+                </div>`;
+  }
+}
+
+function getLabelDesign(labels) {
+  let allLabels = "";
+
+  labels.forEach((label) => {
+    if (label === "bug") {
+      allLabels += `<div
+                    class="px-2 py-0.5 flex items-center gap-1 bg-[#FEECEC] border border-[#FECACA] rounded-full"
+                  >
+
+                    <span class="text-[#EF4444] font-medium text-xs">BUG</span>
+                  </div>`;
+    } else if (label === "help wanted") {
+      allLabels += `<div
+                    class="px-2 py-0.5 flex items-center gap-1 bg-[#FFF8DB] border border-[#FDE68A] rounded-full"
+                  >
+
+
+                    <span class="text-[#D97706] font-medium text-xs"
+                      >HELP WANTED</span
+                    >
+                  </div>`;
+    } else if (label === "enhancement") {
+      allLabels += `<div
+                    class="px-2 py-0.5 flex items-center gap-1 bg-[#DEFCE8] border border-[#BBF7D0] rounded-full"
+                  >
+                    
+
+
+                    <span class="text-[#00A96E] font-medium text-xs"
+                      >ENHANCEMENT</span
+                    >
+                  </div>`;
+    } else if (label === "good first issue") {
+      allLabels += `<div
+                    class="px-2 py-0.5 flex items-center gap-1 bg-[#ebedff] border border-[#bbc1f7] rounded-full"
+                  >
+
+                    <span class="text-[#003ba9] font-medium text-xs"
+                      >GOOD</span
+                    >
+                  </div>`;
+    } else if (label === "documentation") {
+      allLabels += `<div
+                    class="px-2 py-0.5 flex items-center gap-1 bg-[#ffebfc] border border-[#f7bbf2] rounded-full"
+                  >
+
+                    <span class="text-[#a900a1] font-medium text-xs"
+                      >DOCUMENTATION</span
+                    >
+                  </div>`;
+    }
+  });
+
+  return allLabels;
+}
