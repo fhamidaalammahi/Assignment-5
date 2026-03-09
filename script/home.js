@@ -173,3 +173,22 @@ function getModalPriority(priority) {
   }
 }
 
+function getModalAuthorInfo(issue) {
+  let wholeInfo = "";
+  if (issue.status === "open") {
+    wholeInfo += `<div class="px-2 py-0.5 bg-[#00A96E] rounded-full text-white text-xs text-medium">
+            Opened
+        </div>`;
+  } else {
+    wholeInfo += `<div class="px-2 py-0.5 bg-[#A855F7] rounded-full text-white text-xs text-medium">
+            Closed
+        </div>`;
+  }
+
+  wholeInfo += `<div class="w-1 h-1 bg-[#64748B] rounded-full"></div>`;
+  wholeInfo += `<p class="text-[#64748B] text-xs">Opened by ${issue.author}</p>`;
+  wholeInfo += `<div class="w-1 h-1 bg-[#64748B] rounded-full"></div>`;
+  wholeInfo += `<p class="text-[#64748B] text-xs">${getDate(issue.createdAt)}</p>`;
+
+  return wholeInfo;
+}
