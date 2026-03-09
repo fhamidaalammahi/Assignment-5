@@ -192,3 +192,214 @@ function getModalAuthorInfo(issue) {
 
   return wholeInfo;
 }
+function showModalInfo(issue) {
+  const modal = document.getElementById("my_modal_1");
+  document.getElementById("modal-title").innerHTML = issue.title;
+  document.getElementById("modal-author-info").innerHTML =
+    getModalAuthorInfo(issue);
+  document.getElementById("modal-labels").innerHTML = getLabelDesign(
+    issue.labels,
+  );
+  document.getElementById("modal-description").innerHTML = issue.description;
+  document.getElementById("modal-assignee").innerHTML = issue.author;
+  document.getElementById("modal-priority").innerHTML = getModalPriority(
+    issue.priority,
+  );
+  modal.showModal();
+}
+
+async function loadIssues() {
+  const cardsContainer = document.getElementById("cards-container");
+  cardsContainer.innerHTML = `<span class="loading loading-dots loading-xl"></span>`;
+  await fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+    .then((res) => res.json())
+    .then((data) => {
+      loading = false;
+      const allIssues = data.data;
+      cardsContainer.innerHTML = "";
+
+      if (allButton.classList.contains("active")) {
+        issueCount.innerHTML = `${allIssues.length} Issues`;
+        allIssues.forEach((issue) => {
+          const issueCard = document.createElement("div");
+          issueCard.innerHTML = `<div
+            class="border-t-[3px] border-[${getBorderColor(issue.status)}] rounded-[4px] bg-white shadow-sm cursor-pointer hover:bg-gray-200 transition-all ease-in-out duration-300 h-full flex  flex-col" 
+
+            >
+            <div class="p-4 ">
+              <div class="flex items-center justify-between mb-3">
+                ${getStatusDesign(issue.status)}
+                ${getPriorityDesign(issue.priority)}
+                
+              </div>
+              <div>
+                <div class="mb-3">
+                  <p class="text-[#1F2937] font-semibold text-sm mb-2">
+                    ${issue.title}
+                  </p>
+                  <p class="text-xs text-[#64748B] line-clamp-2">
+                    ${issue.description}}
+                  </p>
+                </div>
+                <div class="flex items-center gap-1">
+                  ${getLabelDesign(issue.labels)}
+                </div>
+              </div>
+            </div>
+            <div class="border-t border-[#E4E4E7] p-4 text-[#64748B] text-xs mt-auto ">
+              <p class="mb-2">#${issue.id} by ${issue.author}</p>
+              <p>${getDate(issue.createdAt)}</p>
+            </div>
+          </div>`;
+          cardsContainer.appendChild(issueCard);
+          issueCard.addEventListener("click", () => {
+            showModalInfo(issue);
+          });
+        });
+      } else if (openButton.classList.contains("active")) {
+        issueCount.innerHTML = `${allIssues.filter((issue) => issue.status === "open").length} Issues`;
+        allIssues
+          .filter((issue) => issue.status === "open")
+          .forEach((issue) => {
+            const issueCard = document.createElement("div");
+            issueCard.innerHTML = `<div
+            class="border-t-[3px] border-[${getBorderColor(issue.status)}] rounded-[4px] bg-white shadow-sm cursor-pointer hover:bg-gray-200 transition-all ease-in-out duration-300 h-full flex  flex-col" 
+
+            >
+            <div class="p-4 ">
+              <div class="flex items-center justify-between mb-3">
+                ${getStatusDesign(issue.status)}
+                ${getPriorityDesign(issue.priority)}
+                
+              </div>
+              <div>
+                <div class="mb-3">
+                  <p class="text-[#1F2937] font-semibold text-sm mb-2">
+                    ${issue.title}
+                  </p>
+                  <p class="text-xs text-[#64748B] line-clamp-2">
+                    ${issue.description}}
+                  </p>
+                </div>
+                <div class="flex items-center gap-1">
+                  ${getLabelDesign(issue.labels)}
+                </div>
+              </div>
+            </div>
+            <div class="border-t border-[#E4E4E7] p-4 text-[#64748B] text-xs mt-auto ">
+              <p class="mb-2">#${issue.id} by ${issue.author}</p>
+              <p>${getDate(issue.createdAt)}</p>
+            </div>
+          </div>`;
+            cardsContainer.appendChild(issueCard);
+            issueCard.addEventListener("click", () => {
+              showModalInfo(issue);
+            });
+          });
+      } else {
+        issueCount.innerHTML = `${allIssues.filter((issue) => issue.status === "closed").length} Issues`;
+        allIssues
+          .filter((issue) => issue.status === "closed")
+          .forEach((issue) => {
+            const issueCard = document.createElement("div");
+            issueCard.innerHTML = `<div
+            class="border-t-[3px] border-[${getBorderColor(issue.status)}] rounded-[4px] bg-white shadow-sm cursor-pointer hover:bg-gray-200 transition-all ease-in-out duration-300 h-full flex  flex-col" 
+
+          
+            >
+            <div class="p-4 ">
+              <div class="flex items-center justify-between mb-3">
+                ${getStatusDesign(issue.status)}
+                ${getPriorityDesign(issue.priority)}
+                
+              </div>
+              <div>
+                <div class="mb-3">
+                  <p class="text-[#1F2937] font-semibold text-sm mb-2">
+                    ${issue.title}
+                  </p>
+                  <p class="text-xs text-[#64748B] line-clamp-2">
+                    ${issue.description}}
+                  </p>
+                </div>
+                <div class="flex items-center gap-1">
+                  ${getLabelDesign(issue.labels)}
+                </div>
+              </div>
+            </div>
+            <div class="border-t border-[#E4E4E7] p-4 text-[#64748B] text-xs mt-auto ">
+              <p class="mb-2">#${issue.id} by ${issue.author}</p>
+              <p>${getDate(issue.createdAt)}</p>
+            </div>
+          </div>`;
+            cardsContainer.appendChild(issueCard);
+            issueCard.addEventListener("click", () => {
+              showModalInfo(issue);
+            });
+          });
+      }
+    });
+}
+
+window.onload = function () {
+  loadIssues();
+};
+
+searchField.addEventListener("input", async (e) => {
+  loading = true;
+  const searchText = e.target.value;
+
+  if (searchText == "") {
+    loadIssues();
+    return;
+  }
+
+  const cardsContainer = document.getElementById("cards-container");
+  cardsContainer.innerHTML = `<span class="loading loading-dots loading-xl"></span>`;
+
+  await fetch(
+    `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchText}`,
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      loading = false;
+      const allIssues = data.data;
+      cardsContainer.innerHTML = "";
+      issueCount.innerHTML = `${allIssues.length} Issues`;
+      allIssues.forEach((issue) => {
+        const issueCard = document.createElement("div");
+        issueCard.innerHTML = `<div
+            class="border-t-[3px] border-[${getBorderColor(issue.status)}] rounded-[4px] bg-white shadow-sm cursor-pointer hover:bg-gray-200 transition-all ease-in-out duration-300 h-full flex  flex-col"
+          >
+            <div class="p-4 ">
+              <div class="flex items-center justify-between mb-3">
+                ${getStatusDesign(issue.status)}
+                ${getPriorityDesign(issue.priority)}
+                
+              </div>
+              <div>
+                <div class="mb-3">
+                  <p class="text-[#1F2937] font-semibold text-sm mb-2">
+                    ${issue.title}
+                  </p>
+                  <p class="text-xs text-[#64748B] line-clamp-2">
+                    ${issue.description}}
+                  </p>
+                </div>
+                <div class="flex items-center gap-1">
+                  ${getLabelDesign(issue.labels)}
+                </div>
+              </div>
+            </div>
+            <div class="border-t border-[#E4E4E7] p-4 text-[#64748B] text-xs mt-auto ">
+              <p class="mb-2">#${issue.id} by ${issue.author}</p>
+              <p>${getDate(issue.createdAt)}</p>
+            </div>
+          </div>`;
+        cardsContainer.appendChild(issueCard);
+        issueCard.addEventListener("click", () => {
+          showModalInfo(issue);
+        });
+      });
+    });
+});
